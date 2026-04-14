@@ -5,37 +5,31 @@
 Thumbs.db
 desktop.ini
 
-# --- LOGS ---
+# --- LOGS & BUILD ---
 *.log
 /logs
-/target
+target/
+out/
 
 # --- MAVEN ---
-target/
 !.mvn/wrapper/maven-wrapper.jar
 /mvnw
 /mvnw.cmd
 
 # --- IDEs ---
-# IntelliJ IDEA
 .idea/
 *.iws
 *.iml
 *.ipr
-out/
-
-# VS Code
 .vscode/
-
-# STS / Eclipse
-.apt_generated
+.settings/
 .classpath
-.factorypath
 .project
-.settings
-.springBeans
-.sts4-cache
+.factorypath
+.apt_generated
 
-# --- OTRAS CAPAS ---
+# --- SECRETS & LOCAL ---
 .env
+.env.*
+!.env.example
 .local
