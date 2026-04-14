@@ -1,22 +1,33 @@
 # 🚀 Cliente API - Spring Boot 4.0.5
 
-Esta es mi primera **API REST** profesional construida con Java y Spring Boot. El objetivo del proyecto es gestionar un listado de clientes, aplicando buenas prácticas de arquitectura de software, validación de datos y manejo de excepciones.
+Esta es mi primera **API REST** profesional construida con Java y Spring Boot. El proyecto ha evolucionado de una configuración local simple a una arquitectura **containerizada** con Docker, aplicando buenas prácticas de seguridad, persistencia de datos y gestión de entornos.
 
 ## 🛠️ Tecnologías y Herramientas
 * **Lenguaje:** Java 21
 * **Framework:** Spring Boot 4.0.5
-* **Arquitectura:** Multicapa (Controller, Service, Repository)
+* **Infraestructura:** **Docker & Docker Compose**
+* **Base de Datos:** **PostgreSQL 17**
 * **Gestor de Dependencias:** Maven
-* **Base de Datos:** MySQL
+* **Arquitectura:** Multicapa (Controller, Service, Repository)
 * **Documentación:** Swagger / OpenAPI 3.0
 
 ## 📦 Características (Features)
+- **Infraestructura como Código:** Despliegue automático de la base de datos mediante Docker.
+- **Seguridad de Entorno:** Gestión de credenciales mediante archivos `.env` (protegidos mediante `.gitignore`).
 - **CRUD Completo:** Creación, lectura, actualización y eliminación de clientes.
-- **Validación de Datos:** Uso de `jakarta-validation` para asegurar integridad (nombres no vacíos, formato de email correcto, etc.).
-- **Manejo Global de Errores:** Respuestas JSON limpias para errores 400 (Bad Request) y 404 (Not Found).
-- **Documentación Interactiva:** Swagger UI integrado para probar los endpoints.
+- **Validación de Datos:** Uso de `jakarta-validation` para asegurar integridad.
+- **Manejo Global de Errores:** Respuestas JSON estandarizadas para errores 400 y 404.
+- **Documentación Interactiva:** Swagger UI integrado para pruebas rápidas de endpoints.
 
-## 🚀 Cómo ejecutar el proyecto
-1. Clona el repositorio:
-   ```bash
-   git clone [https://github.com/Diejandro/mi-primer-api.git](https://github.com/Diejandro/mi-primer-api.git)
+## ⚙️ Configuración y Ejecución
+
+### 1. Requisitos previos
+* Docker Desktop instalado y en ejecución.
+* Java 21 y Maven.
+
+### 2. Variables de Entorno
+Crea un archivo `.env` en la raíz del proyecto (este archivo está configurado para ser ignorado por Git por seguridad) con el siguiente formato:
+```env
+DB_NAME=nombre_de_tu_bd
+DB_USER=tu_usuario_de_bd
+DB_PASSWORD=tu_password_segura
