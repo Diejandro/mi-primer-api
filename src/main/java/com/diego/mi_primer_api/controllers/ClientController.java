@@ -3,6 +3,7 @@ package com.diego.mi_primer_api.controllers;
 import com.diego.mi_primer_api.entities.Client;
 import com.diego.mi_primer_api.repositories.ClientRepository;
 import com.diego.mi_primer_api.services.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +27,12 @@ public class ClientController {
     }
 
     @PostMapping
-    public Client createClient(@RequestBody Client client){
+    public Client createClient(@Valid @RequestBody Client client){
         return clientService.save(client);
     }
 
     @PutMapping("/{id}")
-    public Client updateClient(@PathVariable Long id, @RequestBody Client clientDetails){
+    public Client updateClient(@PathVariable Long id,@Valid @RequestBody Client clientDetails){
 
         Client client = clientService.findById(id);
 
