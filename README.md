@@ -23,11 +23,44 @@ Esta es mi primera **API REST** profesional construida con Java y Spring Boot. E
 
 ### 1. Requisitos previos
 * Docker Desktop instalado y en ejecución.
-* Java 21 y Maven.
+* Java 21 y Maven.dfg
+
 
 ### 2. Variables de Entorno
 Crea un archivo `.env` en la raíz del proyecto (este archivo está configurado para ser ignorado por Git por seguridad) con el siguiente formato:
 ```env
 DB_NAME=nombre_de_tu_bd
 DB_USER=tu_usuario_de_bd
-DB_PASSWORD=tu_password_segura
+DB_PASSWORD=tu_password_segura.
+```
+
+### 3. Levantar la infraestructura
+
+Para iniciar la basde Docker, ejecuta el siguiente comando en la terminal:
+
+```docker compose up -d```
+
+### 4. Ejecutar la aplicación
+
+Una vez que el contenedor de PostgreSQL esté corriendo, puedes lanzar la API desde tu IDE (IntelliJ IDEA) o mediante la terminal:
+
+```mvn spring-boot:run```
+
+La API estará disponible en: http://localhost:8080  
+La documentación Swagger en: http://localhost:8080/swagger-ui.html
+
+### 🗺️ Próximas Actualizaciones (Roadmap)
+Este proyecto sigue en desarrollo activo. Las próximas fases de implementación incluyen:
+
+[ ] Relaciones JPA: Implementación de relaciones 1:N y N:N (ej: Clientes, Pedidos y Productos).
+
+[ ] Implementación de DTOs: Uso de Data Transfer Objects para desacoplar la base de datos de la capa de respuesta.
+
+[ ] Seguridad: Implementación de autenticación y autorización mediante JWT.
+
+[ ] Pruebas Automatizadas: Cobertura de tests unitarios y de integración con JUnit y Mockito.
+
+
+
+
+
