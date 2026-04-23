@@ -2,8 +2,12 @@ package com.diego.mi_primer_api.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 @Entity
-@Table(name="clients")
+@Table(name="client")
 public class Client {
 
     @Id
@@ -11,12 +15,20 @@ public class Client {
     private Long id;
     private String name;
     private String email;
+    private String clientNumId;
 
-    public Client() {}
+    @OneToMany(mappedBy="clients")
+    private List<Order> orders;
 
-    public Client(String name, String email) {
+    public Client() {
+        this.orders = new ArrayList<>();
+    }
+
+    public Client(String name, String email, String clientNumId) {
+        this();
         this.name = name;
         this.email = email;
+        this.clientNumId = clientNumId;
     }
 
     public Long getId() {
@@ -41,5 +53,33 @@ public class Client {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public String getClientNumId() {
+        return clientNumId;
+    }
+
+    public void setClientNumId(String clientNumId) {
+        this.clientNumId = clientNumId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return Objects.equals(clientNumId, client.clientNumId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(clientNumId);
     }
 }
