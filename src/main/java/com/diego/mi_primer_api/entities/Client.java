@@ -1,23 +1,38 @@
 package com.diego.mi_primer_api.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name="client")
+@Table(name="clients")
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "{NotBlank.client.name}")
+    @Size(min = 3, max = 50, message = "{Size.client.name}")
     private String name;
+
+    @NotBlank(message = "{NotBlank.client.email}")
+    @Email(message = "{Email.client.email}")
     private String email;
+
+    @NotBlank(message = "{NotBlank.client.clientNumId}")
+    @Pattern(regexp = "^[0-9]{8}[a-zA-Z]$", message = "{Pattern.client.clientNumId}")
+    @Column(name = "client_num_id",unique = true)
     private String clientNumId;
 
-    @OneToMany(mappedBy="clients")
+    @OneToMany(mappedBy="client", cascade = CascadeType.ALL)
     private List<Order> orders;
 
     public Client() {
