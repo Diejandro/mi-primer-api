@@ -1,12 +1,16 @@
 package com.diego.mi_primer_api.services;
 
-import com.diego.mi_primer_api.repositories.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.diego.mi_primer_api.entities.Product;
 
-@Service
-public class ProductService {
+import java.util.List;
+import java.util.Optional;
 
-    @Autowired
-    private ProductRepository productRepository;
+public interface ProductService{
+
+    List<Product> findAll();
+    Optional<Product> findById(Long id);
+    Product save(Product product);
+    Optional<Product> update(Long id, Product product);
+    Optional<Product> delete(Long id);
+
 }

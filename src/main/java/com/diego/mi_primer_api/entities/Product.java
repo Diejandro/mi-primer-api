@@ -1,22 +1,39 @@
 package com.diego.mi_primer_api.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "products")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String productUsk;
+    @NotBlank(message = "{NotBlank.product.productName}")
+    @Size(min = 4, max = 50, message = "{Size.product.productName}")
+    @Column(name = "product_name")
     private String productName;
+
+    @NotBlank(message = "{NotBlank.product.productDescription}")
+    @Column(name = "product_description",columnDefinition = "TEXT")
     private String productDescription;
-    private Double productPrice;
+
+    @NotNull(message = "{NotNull.product.productPrice}")
+    @DecimalMin(value = "0.01", message = "{DecimalMin.product.productPrice}")
+    @Column(name = "product_price", precision = 12, scale = 2)
+    private BigDecimal productPrice;
+
+    @NotBlank(message = "{NoBlank.product.productSKU}")
+    @Pattern(regexp = "^[A-Z]{3}-[A-Z0-9]{4,5}-[0-9]{2}$", message = "{Pattern.product.productSKU}")
+    @Column(name = "sku_code", unique = true)
+    private String productSKU;
 
     @ManyToMany(mappedBy = "products")
     private List<Order> orders;
@@ -25,9 +42,9 @@ public class Product {
         this.orders = new ArrayList<>();
     }
 
-    public Product(String productUsk, String productName, String productDescription, Double productPrice) {
+    public Product(String productSKU, String productName, String productDescription, BigDecimal productPrice) {
         this();
-        this.productUsk = productUsk;
+        this.productSKU = productSKU;
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
@@ -41,12 +58,12 @@ public class Product {
         this.id = id;
     }
 
-    public String getProductUsk() {
-        return productUsk;
+    public String getProductSKU() {
+        return productSKU;
     }
 
-    public void setProductUsk(String productUsk) {
-        this.productUsk = productUsk;
+    public void setProductSKU(String productSKU) {
+        this.productSKU = productSKU;
     }
 
     public String getProductName() {
@@ -65,11 +82,11 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    public Double getProductPrice() {
+    public BigDecimal getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(Double productPrice) {
+    public void setProductPrice(BigDecimal productPrice) {
         this.productPrice = productPrice;
     }
 
@@ -85,11 +102,11 @@ public class Product {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Objects.equals(productUsk, product.productUsk);
+        return Objects.equals(productSKU, product.productSKU);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(productUsk);
+        return Objects.hashCode(productSKU);
     }
 }
