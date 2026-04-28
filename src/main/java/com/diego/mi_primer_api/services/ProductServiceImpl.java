@@ -30,6 +30,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public Product save(Product product) {
+        if(productRepository.existsBySku(product.getProductSKU())){
+            throw new RuntimeException("Ya existe un producto con el código: " + product.getProductSKU());
+        }
         return productRepository.save(product);
     }
 

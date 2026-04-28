@@ -75,6 +75,22 @@ public class ClientServiceImplTest {
     }
 
     @Test
+    void save_shouldThrowException_WhenClientIdAlreadyExists() {
+
+        String dniExistente = client.getClientNumId();
+
+        when(clientRepository.existsByClientNumId(dniExistente)).thenReturn(true);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            clientService.save(client);
+        });
+
+        assertEquals("Ya existe un cliente con este número", exception.getMessage());
+
+        verify(clientRepository, never()).save(any(Client.class));
+    }
+
+    @Test
     void updateClient_shouldReturnUpdatedClient(){
         Long id = 1L;
         Client datosNuevos = new Client("nameTestActualizado", "email1@test1.com", "12345678R");

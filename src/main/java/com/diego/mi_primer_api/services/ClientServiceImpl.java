@@ -31,6 +31,10 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional
     public Client save(Client client) {
+        if(clientRepository.existsByClientNumId(client.getClientNumId())) {
+            throw new RuntimeException("Ya existe un cliente con este número");
+        }
+
         return clientRepository.save(client);
     }
 

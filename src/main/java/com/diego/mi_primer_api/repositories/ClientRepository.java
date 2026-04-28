@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Long> {}
+public interface ClientRepository extends JpaRepository<Client, Long> {
+
+    boolean existsByClientNumId(String clientNumId);
+}
