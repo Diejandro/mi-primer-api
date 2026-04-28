@@ -32,7 +32,8 @@ public class ClientController {
     public ResponseEntity<?> viewClientsById(@PathVariable Long id){
         Optional<Client> clientOptional = clientService.findById(id);
         if(clientOptional.isPresent()){
-            return ResponseEntity.ok(clientOptional.orElseThrow());
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(clientOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
