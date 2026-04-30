@@ -2,7 +2,6 @@ package com.diego.mi_primer_api.services;
 
 import com.diego.mi_primer_api.entities.Client;
 import com.diego.mi_primer_api.entities.Order;
-import com.diego.mi_primer_api.entities.Product;
 import com.diego.mi_primer_api.repositories.ClientRepository;
 import com.diego.mi_primer_api.repositories.OrderRepository;
 import com.diego.mi_primer_api.repositories.ProductRepository;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -90,30 +88,28 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    //---------------------
-
     @Override
     @Transactional
     public Optional<Order> update(Long id, Order orderDetails) {
-
         return orderRepository.findById(id).map(orderDb -> {
-           String newTrackingNumber = orderDetails.getOrderNumber();
-           String currentTrackingNumber = orderDb.getTrackingNumber();
 
-           if(newTrackingNumber != null && !newTrackingNumber.equals(currentTrackingNumber)){
-               if(orderRepository.existsByTrackingNumber(newTrackingNumber)){
-                   throw new RuntimeException("Tracking is already assigned to another order");
-               }
-               orderDb.setTrackingNumber(newTrackingNumber);
-           }
-           orderDb.setOrderStatus(orderDetails.getOrderStatus());
+            String newTrackingNumber = orderDetails.getTrackingNumber();
+            String currentTrackingNumber = orderDb.getTrackingNumber();
 
-           return orderRepository.save(orderDb);
+            if (newTrackingNumber != null && !newTrackingNumber.equals(currentTrackingNumber)) {
+                if (orderRepository.existsByTrackingNumber(newTrackingNumber)) {
+                    throw new RuntimeException("Tracking is already assigned to another order");
+                }
+                orderDb.setTrackingNumber(newTrackingNumber);
+            }
+
+            if (orderDetails.getOrderStatus() != null) {
+                orderDb.setOrderStatus(orderDetails.getOrderStatus());
+            }
+
+            return orderRepository.save(orderDb);
         });
     }
-
-    //---------------------
-
 
     @Override
     @Transactional
