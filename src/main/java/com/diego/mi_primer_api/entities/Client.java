@@ -33,7 +33,7 @@ public class Client {
     @Column(name = "client_num_id", unique = true, nullable = false)
     private String clientNumId;
 
-    @OneToMany(mappedBy="client", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="client", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
     public Client() {
