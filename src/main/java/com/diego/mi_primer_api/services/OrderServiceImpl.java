@@ -44,9 +44,6 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByClientId(clientId) ;
     }
 
-
-    //---------------------
-
     @Override
     @Transactional
     public Order save(Order order) {
@@ -80,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
         int intentos = 0;
 
         do{
-            if(intentos > 5){throw new RuntimeException("No se pudo generar un número de pedido único tras 5 intentos");}
+            if(intentos > 5){throw new RuntimeException("order number could not be generated after 5 times");}
             numOrder = UUID.randomUUID().toString().substring(24);
             intentos++;
         }while(orderRepository.existsByOrderNumber(numOrder));
@@ -93,20 +90,30 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-
     //---------------------
 
     @Override
     @Transactional
-    public Optional<Order> update(Long id, Order order) {
-        return orderRepository.findById(id).map(orderDB -> {
-            orderDB.setOrderNumber(order.getOrderNumber());
-            orderDB.setOrderDate(order.getOrderDate());
-            orderDB.setOrderStatus(order.getOrderStatus());
-            orderDB.setTrackingNumber(order.getTrackingNumber());
-            return orderRepository.save(orderDB);
+    public Optional<Order> update(Long id, Order orderDetails) {
+
+        return orderRepository.findById(id).map(orderDb -> {
+           String newTrackingNumber = orderDetails.getOrderNumber();
+           String currentTrackingNumber = orderDb.getTrackingNumber();
+
+           if(newTrackingNumber != null && !newTrackingNumber.equals(currentTrackingNumber)){
+               if(orderRepository.existsByTrackingNumber(newTrackingNumber)){
+                   throw new RuntimeException("Tracking is already assigned to another order");
+               }
+               orderDb.setTrackingNumber(newTrackingNumber);
+           }
+           orderDb.setOrderStatus(orderDetails.getOrderStatus());
+
+           return orderRepository.save(orderDb);
         });
     }
+
+    //---------------------
+
 
     @Override
     @Transactional
