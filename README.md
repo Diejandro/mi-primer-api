@@ -52,13 +52,7 @@ La documentación Swagger en: http://localhost:8080/swagger-ui.html
 ### 🗺️ Próximas Actualizaciones (Roadmap)
 Este proyecto sigue en desarrollo activo. Las próximas fases de implementación incluyen:
 
-[ ] Relaciones JPA: Implementación de relaciones 1:N y N:N (ej: Clientes, Pedidos y Productos).
-
-[ ] Implementación de DTOs: Uso de Data Transfer Objects para desacoplar la base de datos de la capa de respuesta.
-
 [ ] Seguridad: Implementación de autenticación y autorización mediante JWT.
-
-[ ] Pruebas Automatizadas: Cobertura de tests unitarios y de integración con JUnit y Mockito.
 
 
 
