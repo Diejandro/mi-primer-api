@@ -9,7 +9,7 @@ public interface OrderService {
 
     List<Order> findAll();
     Optional<Order> findById(Long id);
-    Optional<Order> findByClient(Long clientId);
+    List<Order> findByClient(Long clientId);
     Order save(Order order);
     Optional<Order> update(Long id, Order order);
     Optional<Order> delete(Long id);
