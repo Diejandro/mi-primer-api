@@ -20,15 +20,17 @@ public class Client {
 
     @NotBlank(message = "{NotBlank.client.name}")
     @Size(min = 3, max = 50, message = "{Size.client.name}")
+    @Column(nullable = false)
     private String name;
 
     @NotBlank(message = "{NotBlank.client.email}")
     @Email(message = "{Email.client.email}")
+    @Column(nullable = false)
     private String email;
 
     @NotBlank(message = "{NotBlank.client.clientNumId}")
     @Pattern(regexp = "^[0-9]{8}[a-zA-Z]$", message = "{Pattern.client.clientNumId}")
-    @Column(name = "client_num_id",unique = true)
+    @Column(name = "client_num_id", unique = true, nullable = false)
     private String clientNumId;
 
     @OneToMany(mappedBy="client", cascade = CascadeType.ALL)

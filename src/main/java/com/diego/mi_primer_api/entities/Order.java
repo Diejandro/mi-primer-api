@@ -1,6 +1,9 @@
 package com.diego.mi_primer_api.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,13 +18,24 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime orderDate;
-    private String trackingNumber;
-    private String orderStatus;
+    @NotBlank
+    @Column(unique = true, nullable = false)
     private String orderNumber;
+
+    @NotNull
+    @Column(name = "order_date", nullable = false)
+    private LocalDateTime orderDate;
+
+    @NotBlank
+    @Column(name = "order_status", nullable = false)
+    private String orderStatus;
+    
+    @Column(name = "tracking_number",unique = true)
+    private String trackingNumber;
 
 
     @ManyToMany
+    @NotEmpty
     @JoinTable(
             name = "rel_orders_products",
             joinColumns = @JoinColumn(name="order_id"),
@@ -29,7 +43,8 @@ public class Order {
     )
     private List<Product> products;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
     public Order() {

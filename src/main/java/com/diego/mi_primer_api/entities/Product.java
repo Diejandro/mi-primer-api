@@ -18,21 +18,21 @@ public class Product {
 
     @NotBlank(message = "{NotBlank.product.productName}")
     @Size(min = 4, max = 50, message = "{Size.product.productName}")
-    @Column(name = "product_name")
+    @Column(name = "product_name", nullable = false)
     private String productName;
 
     @NotBlank(message = "{NotBlank.product.productDescription}")
-    @Column(name = "product_description",columnDefinition = "TEXT")
+    @Column(name = "product_description", columnDefinition = "TEXT", nullable = false)
     private String productDescription;
 
     @NotNull(message = "{NotNull.product.productPrice}")
     @DecimalMin(value = "0.01", message = "{DecimalMin.product.productPrice}")
-    @Column(name = "product_price", precision = 12, scale = 2)
+    @Column(name = "product_price", precision = 12, scale = 2, nullable = false)
     private BigDecimal productPrice;
 
     @NotBlank(message = "{NoBlank.product.productSKU}")
     @Pattern(regexp = "^[A-Z]{3}-[A-Z0-9]{4,5}-[0-9]{2}$", message = "{Pattern.product.productSKU}")
-    @Column(name = "sku_code", unique = true)
+    @Column(name = "sku_code", unique = true, nullable = false)
     private String productSKU;
 
     @ManyToMany(mappedBy = "products")
