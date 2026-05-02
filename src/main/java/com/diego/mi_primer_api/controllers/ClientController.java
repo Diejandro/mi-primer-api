@@ -50,22 +50,16 @@ public class ClientController {
     public ResponseEntity<?> updateClient(@Valid @RequestBody Client client, BindingResult result, @PathVariable Long id){
         if(result.hasErrors()) return ValidationUtils.validationError(result);
 
-        Optional<Client> clientOptional = clientService.update(id, client);
-        if(clientOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(clientOptional.orElseThrow());
-        }
-        return ResponseEntity.notFound().build();
+        return clientService.update(id, client)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteClient(@PathVariable Long id){
-        Optional<Client> clientOptional = clientService.delete(id);
 
-        if(clientOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(clientOptional.orElseThrow());
-        }
-        return ResponseEntity.notFound().build();
+        return clientService.delete(id)
+                .map(c -> ResponseEntity.status(HttpStatus.NO_CONTENT).build())
+                .orElse(ResponseEntity.notFound().build());
     }
 }

@@ -48,24 +48,16 @@ public class ProductController {
     public ResponseEntity<?> updateProduct(@Valid @RequestBody Product product, BindingResult result, @PathVariable Long id){
         if(result.hasErrors()) return ValidationUtils.validationError(result);
 
-        Optional<Product> productOptional = productService.update(id, product);
-        if(productOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(productOptional.orElseThrow());
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return productService.update(id, product)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id){
-
-        Optional<Product> productOptional = productService.delete(id);
-        if(productOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .build();
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return productService.delete(id)
+                .map(p -> ResponseEntity.status(HttpStatus.NO_CONTENT).build())
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }
