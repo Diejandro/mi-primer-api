@@ -35,36 +35,46 @@ public class OrderController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/client/{client_id}")
+    public ResponseEntity<?> viewOrdersByClientId(@PathVariable Long client_id) {
+        List<Order> orderList = orderService.findByClient(client_id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(orderList);
+    }
+
     @PostMapping
     public ResponseEntity<?> createOrder(@Valid @RequestBody Order order, BindingResult result) {
         if (result.hasErrors()) return ValidationUtils.validationError(result);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(orderService.save(order));
+        try{
+            Order newOrder = orderService.save(order);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newOrder);
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateOrder(@Valid @RequestBody Order order, BindingResult result, @PathVariable Long id) {
-        if (result.hasErrors()) ValidationUtils.validationError(result);
+        if (result.hasErrors()) return ValidationUtils.validationError(result);
 
-        Optional<Order> orderOptional = orderService.update(id,  order);
-
-        if (orderOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(orderOptional.orElseThrow());
+        try{
+            return orderService.update(id, order)
+                    .map(o -> ResponseEntity.status(HttpStatus.OK).body(o))
+                    .orElse(ResponseEntity.notFound().build());
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
-        Optional<Order> orderOptional = orderService.delete(id);
 
-        if (orderOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(orderOptional.orElseThrow());
-        }
-        return ResponseEntity.notFound().build();
+        return orderService.delete(id)
+                .map(order -> ResponseEntity.status(HttpStatus.NO_CONTENT).build())
+                .orElse(ResponseEntity.notFound().build());
     }
 }

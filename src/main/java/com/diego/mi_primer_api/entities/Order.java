@@ -35,7 +35,7 @@ public class Order {
 
 
     @ManyToMany
-    @NotEmpty
+    @NotEmpty(message = "{NotEmpty.order.product}")
     @JoinTable(
             name = "rel_orders_products",
             joinColumns = @JoinColumn(name="order_id"),
@@ -43,6 +43,7 @@ public class Order {
     )
     private List<Product> products;
 
+    @NotNull(message = "{NotNull.order.client}")
     @ManyToOne(optional = false)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
