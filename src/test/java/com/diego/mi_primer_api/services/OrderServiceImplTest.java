@@ -170,14 +170,14 @@ public class OrderServiceImplTest {
 
     @Test
     void update_shouldThrowException_WhenTrackingAlreadyExists() {
-        // Arrange
+
         Order orderDetails = new Order();
         orderDetails.setTrackingNumber("TRACK-DUPLICADO");
 
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
         when(orderRepository.existsByTrackingNumber("TRACK-DUPLICADO")).thenReturn(true);
 
-        // Act & Assert
+
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             orderService.update(1L, orderDetails);
         });

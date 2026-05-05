@@ -68,7 +68,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    void findAll_shouldReturnClients_whenIdExists() {
+    void findAll_shouldReturnProducts_whenIdExists() {
         when(productService.findAll()).thenReturn(Arrays.asList(product1, product2));
 
         ResponseEntity<?> response = productController.listAllProducts();
