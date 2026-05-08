@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente requerido para usuario no admin");
         }
 
+        user.setEnabled(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);
