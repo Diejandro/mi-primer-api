@@ -49,11 +49,6 @@ Una vez que el contenedor de PostgreSQL esté corriendo, puedes lanzar la API de
 La API estará disponible en: http://localhost:8080  
 La documentación Swagger en: http://localhost:8080/swagger-ui.html
 
-### 🗺️ Próximas Actualizaciones (Roadmap)
-Este proyecto sigue en desarrollo activo. Las próximas fases de implementación incluyen:
-
-[ ] Seguridad: Implementación de autenticación y autorización mediante JWT.
-
 
 
 
