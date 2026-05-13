@@ -35,22 +35,26 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
         String header = request.getHeader(HEADER_AUTHORIZATION);
 
         if(header == null || !header.startsWith(PREFIX_TOKEN)) {
+            chain.doFilter(request,response);
             return;
         }
 
         String token = header.replace(PREFIX_TOKEN, "");
 
         try {
-            Claims claims = Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token).getPayload();
+            Claims claims = Jwts.parser()
+                    .verifyWith(SECRET_KEY)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
 
             String username = claims.getSubject();
-            Object authoritiesClaims =  claims.get("authorities");
 
-            Collection<? extends GrantedAuthority> authorities = Collections.singletonList(
-                    new ObjectMapper()
-                            .addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityJsonCreator.class)
-                            .readValue(authoritiesClaims.toString().getBytes(), SimpleGrantedAuthority.class)
-            );
+            List<String> rolesNames = (List<String>) claims.get("authorities");
+
+            Collection<? extends GrantedAuthority> authorities = rolesNames.stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .toList();
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);

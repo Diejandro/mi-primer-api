@@ -2,6 +2,7 @@ package com.diego.mi_primer_api.services;
 
 import com.diego.mi_primer_api.entities.Role;
 import com.diego.mi_primer_api.entities.User;
+import com.diego.mi_primer_api.repositories.ClientRepository;
 import com.diego.mi_primer_api.repositories.RoleRepository;
 import com.diego.mi_primer_api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
